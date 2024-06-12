@@ -11,7 +11,10 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
 
 # Installs gsi keys into ramdisk, to boot a developer GSI with verified boot.
-$(call inherit-product, $(SRC_TARGET_DIR)/product/gsi_keys.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/developer_gsi_keys.mk)
+
+# Enable project quotas and casefolding for emulated storage without sdcardfs
+$(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 
 # Setup dalvik vm configs
 $(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
@@ -43,19 +46,28 @@ TARGET_SCREEN_WIDTH := 1080
 
 # Boot control
 PRODUCT_PACKAGES += \
-    android.hardware.boot@1.1-impl-qti.recovery
-
-PRODUCT_PACKAGES_DEBUG += \
-    bootctl
+    android.hardware.boot@1.2-impl-qti \
+    android.hardware.boot@1.2-impl-qti.recovery \
+    android.hardware.boot@1.2-service
 
 # Dynamic partitions
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 PRODUCT_BUILD_SUPER_PARTITION := false
 
+# f2fs utilities
+PRODUCT_PACKAGES += \
+    sg_write_buffer \
+    f2fs_io \
+    check_f2fs
+
 # Fastbootd
 PRODUCT_PACKAGES += \
-    android.hardware.fastboot@1.0-impl-mock \
+    android.hardware.fastboot@1.1-impl-mock \
     fastbootd
+
+# FUSE passthrough
+PRODUCT_SYSTEM_PROPERTIES += \
+    persist.sys.fuse.passthrough.enable=true
 
 # Init scripts
 PRODUCT_PACKAGES += \
