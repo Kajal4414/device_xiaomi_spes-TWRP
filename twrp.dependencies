@@ -1,8 +1,8 @@
 [
   {
     "remote": "github",
-    "repository": "CHRISL7/kernel_xiaomi_sm6225",
+    "repository": "boedhack99/kernel_xiaomi_spes",
     "target_path": "kernel/xiaomi/spes",
-    "revision": "uvite"
+    "revision": "12"
   }
 ]
